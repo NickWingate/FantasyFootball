@@ -6,8 +6,24 @@ namespace FantasyFootball.Core.Models
 {
     public class TeamModel
     {
+        private List<PlayerModel> _players;
+
         public string Name { get; set; }
-        public List<PlayerModel> Players { get; set; }
+        public List<PlayerModel> Players 
+        {
+            get { return _players; }
+            set
+            {
+                if (Size > 5)
+                {
+                    throw new Exception("Team size can be 5 players max ");
+                }
+                else
+                {
+                    _players = value;
+                }
+            } 
+        }
         public int Size => Players.Count;
         public int Score
         {
@@ -20,6 +36,11 @@ namespace FantasyFootball.Core.Models
                 }
                 return total;
             }
+        }
+
+        public TeamModel(string name)
+        {
+            Name = name;
         }
     }
 }
