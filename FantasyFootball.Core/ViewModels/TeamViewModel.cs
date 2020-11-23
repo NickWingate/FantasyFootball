@@ -29,8 +29,8 @@ namespace FantasyFootball.Core.ViewModels
             AddPlayerCommand = new MvxCommand(AddPlayer);
         }
         public IMvxCommand AddPlayerCommand { get; set; }
-        private ObservableCollection<PlayerModel> _players = new ObservableCollection<PlayerModel>();
 
+        private ObservableCollection<PlayerModel> _players = new ObservableCollection<PlayerModel>();
         public ObservableCollection<PlayerModel> Players
         {
             get { return _players; }
@@ -47,7 +47,7 @@ namespace FantasyFootball.Core.ViewModels
             }
         }
         public int Size => Players.Count;
-        public int Score
+        public int TeamValue
         {
             get
             {
@@ -89,11 +89,10 @@ namespace FantasyFootball.Core.ViewModels
             get { return _goals; }
             set 
             {
-
                 if (SetProperty(ref _goals, value))
                 {
                     RaisePropertyChanged(() => Goals);
-
+                    RaisePropertyChanged(() => CanAddPlayer);
                 }
             }
         }
@@ -107,7 +106,7 @@ namespace FantasyFootball.Core.ViewModels
             {
                 SetProperty(ref _yellowCards, value);
                 RaisePropertyChanged(() => YellowCards);
-
+                RaisePropertyChanged(() => CanAddPlayer);
             }
         }
         private string _redCards;
@@ -119,7 +118,7 @@ namespace FantasyFootball.Core.ViewModels
             {
                 SetProperty(ref _redCards, value);
                 RaisePropertyChanged(() => RedCards);
-
+                RaisePropertyChanged(() => CanAddPlayer);
             }
         }
         public bool IsInteger(string val)
@@ -127,17 +126,29 @@ namespace FantasyFootball.Core.ViewModels
             return uint.TryParse(val, out uint _);
         }
         public string PlayerFullName => $"{PlayerFirstName} {PlayerLastName}";
+        public bool CanAddPlayer => uint.TryParse(Goals, out _)
+            && uint.TryParse(YellowCards, out _)
+            && uint.TryParse(RedCards, out _)
+            && Size < 5;
 
         public void AddPlayer()
         {
-            string[] numberVars = { Goals, YellowCards, RedCards };
-            foreach (string number in numberVars)
-            {
-                
-            }
             PlayerModel p = new PlayerModel(PlayerFullName,
-                Convert.ToInt32(Goals), Convert.ToInt32(YellowCards), Convert.ToInt32(RedCards));
+                Convert.ToInt32(Goals), 
+                Convert.ToInt32(YellowCards), 
+                Convert.ToInt32(RedCards));
             Players.Add(p);
+            ClearFields();
+            RaisePropertyChanged(() => Players);
+            RaisePropertyChanged(() => TeamValue);
+        }
+        private void ClearFields()
+        {
+            PlayerFirstName = String.Empty;
+            PlayerLastName = String.Empty;
+            Goals = String.Empty;
+            YellowCards = String.Empty;
+            RedCards = String.Empty;
         }
     }
 }
