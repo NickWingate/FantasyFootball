@@ -36,14 +36,7 @@ namespace FantasyFootball.Core.ViewModels
             get { return _players; }
             set
             {
-                if (Size > 5)
-                {
-                    throw new Exception("Team size can be 5 players max ");
-                }
-                else
-                {
-                    SetProperty(ref _players, value);
-                }
+                SetProperty(ref _players, value);
             }
         }
         public int Size => Players.Count;
@@ -121,11 +114,9 @@ namespace FantasyFootball.Core.ViewModels
                 RaisePropertyChanged(() => CanAddPlayer);
             }
         }
-        public bool IsInteger(string val)
-        {
-            return uint.TryParse(val, out uint _);
-        }
+
         public string PlayerFullName => $"{PlayerFirstName} {PlayerLastName}";
+        public bool IsPlayerLimitReached => Size >= 5;
         public bool CanAddPlayer => uint.TryParse(Goals, out _)
             && uint.TryParse(YellowCards, out _)
             && uint.TryParse(RedCards, out _)
@@ -141,6 +132,7 @@ namespace FantasyFootball.Core.ViewModels
             ClearFields();
             RaisePropertyChanged(() => Players);
             RaisePropertyChanged(() => TeamValue);
+            RaisePropertyChanged(() => IsPlayerLimitReached);
         }
         private void ClearFields()
         {

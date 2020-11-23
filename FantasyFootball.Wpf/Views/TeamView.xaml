@@ -7,13 +7,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:FantasyFootball.Wpf.Views"
-        xmlns:sysControls="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:validators="clr-namespace:FantasyFootball.Wpf.ValidationRules"
+        xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
         mc:Ignorable="d" 
-        d:DesignHeight="450" d:DesignWidth="800"
+        d:DesignHeight="450" d:DesignWidth="900"
         FontFamily="Bahnschrift Light"
         FontSize="20">
     <UserControl.Resources>
         <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <Label DockPanel.Dock="Bottom"
+                                   Foreground="Red"
+                                   FontSize="10"
+                                   Content="{Binding ElementName=MyAdorner,
+                                                     Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                            </Label>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder Name="MyAdorner" />
+                            </Border>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -45,6 +65,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
 
             </Grid.RowDefinitions>
@@ -57,33 +78,52 @@
 
             <!--Goals-->
             <Label Content="Goals:" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Must be positive integer" 
-                   Grid.Row="2" Grid.Column="0" Visibility="Hidden"
-                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                   FontSize="10" Foreground="Red"/>
-            <TextBox Text="{Binding Goals, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"  Grid.Column="1" VerticalAlignment="Center"/>
-
+            <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="Goals" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validators:PositiveIntegerValidationRule ErrorMessage="Goals must be positive integer"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            
             <!--Yellow Cards-->
             <Label Content="Yellow Cards:" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Must be positive integer" 
-                   Grid.Row="3" Grid.Column="0" Visibility="Hidden"
-                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                   FontSize="10" Foreground="Red"/>
-            <TextBox Text="{Binding YellowCards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="3"  Grid.Column="1" VerticalAlignment="Center"/>
-
+            <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="YellowCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validators:PositiveIntegerValidationRule ErrorMessage="Yellow cards must be positive integer"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            
             <!--Red Cards-->
             <Label Content="Red Cards:" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Content="Must be positive integer" 
-                   Grid.Row="4" Grid.Column="0" Visibility="Hidden"
-                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                   FontSize="10" Foreground="Red"/>
-            <TextBox Text="{Binding RedCards, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4"  Grid.Column="1" VerticalAlignment="Center"/>
-
+            <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="RedCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validators:PositiveIntegerValidationRule ErrorMessage="Red cards must be positive integer"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            
+            <!--AddPlayers-->
+            
             <Button mvx:Bi.nd="Command AddPlayerCommand"
                     Content="Add Player" 
-                    Grid.Row="5" Grid.ColumnSpan="2" 
+                    Grid.Row="6" Grid.ColumnSpan="2" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10"
                     IsEnabled="{Binding CanAddPlayer}"/>
+            <Label Content="Team can have maximum of five players"
+                   FontSize="10" Foreground="Red"
+                   HorizontalAlignment="Center"
+                   Visibility="{Binding IsPlayerLimitReached, Converter={StaticResource BooleanToVisibilityConverter}}"
+                   Grid.Row="5" Grid.ColumnSpan="2"/>
         </Grid>
         <DataGrid ItemsSource="{Binding Players}" IsReadOnly="True"
                   Grid.Column="2" Grid.Row="2"
