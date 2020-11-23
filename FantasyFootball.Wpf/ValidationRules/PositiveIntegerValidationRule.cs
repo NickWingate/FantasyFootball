@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
+﻿using System.Globalization;
 using System.Windows.Controls;
 
 namespace FantasyFootball.Wpf.ValidationRules
@@ -9,6 +6,7 @@ namespace FantasyFootball.Wpf.ValidationRules
     public class PositiveIntegerValidationRule : ValidationRule
     {
         public string ErrorMessage { get; set; }
+
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             ValidationResult result = new ValidationResult(true, null);

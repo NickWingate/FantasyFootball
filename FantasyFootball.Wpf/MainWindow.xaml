@@ -8,6 +8,5 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="850">
     <Grid>
-
     </Grid>
 </views:MvxWindow>

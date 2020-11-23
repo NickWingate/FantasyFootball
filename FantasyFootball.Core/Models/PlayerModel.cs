@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FantasyFootball.Core.Models
+﻿namespace FantasyFootball.Core.Models
 {
     public class PlayerModel
     {

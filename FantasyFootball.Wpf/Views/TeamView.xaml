@@ -4,17 +4,17 @@
         x:Class="FantasyFootball.Wpf.Views.TeamView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:FantasyFootball.Wpf.Views"
         xmlns:validators="clr-namespace:FantasyFootball.Wpf.ValidationRules"
         xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
-        mc:Ignorable="d" 
+        mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="900"
         FontFamily="Bahnschrift Light"
         FontSize="20">
     <UserControl.Resources>
-        <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
@@ -27,7 +27,7 @@
                                                      Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
                             </Label>
                             <Border BorderBrush="Red" BorderThickness="1">
-                                <AdornedElementPlaceholder Name="MyAdorner" />
+                                <AdornedElementPlaceholder Name="MyAdorner"/>
                             </Border>
                         </StackPanel>
                     </ControlTemplate>
@@ -48,11 +48,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Label Content="Add Player" 
-               Grid.Column="1" 
-               Grid.Row="1" 
-               FontSize="36" 
-               FontWeight="Normal" 
+        <Label Content="Add Player"
+               Grid.Column="1"
+               Grid.Row="1"
+               FontSize="36"
+               FontWeight="Normal"
                HorizontalAlignment="Center"/>
         <Grid Grid.Row="2" Grid.Column="1" Margin="0 0 10 0">
             <Grid.ColumnDefinitions>
@@ -67,7 +67,6 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-
             </Grid.RowDefinitions>
             <!--Name-->
             <Label Content="First name:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -87,7 +86,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            
+
             <!--Yellow Cards-->
             <Label Content="Yellow Cards:" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
@@ -99,7 +98,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            
+
             <!--Red Cards-->
             <Label Content="Red Cards:" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
@@ -111,12 +110,12 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            
+
             <!--AddPlayers-->
-            
+
             <Button mvx:Bi.nd="Command AddPlayerCommand"
-                    Content="Add Player" 
-                    Grid.Row="6" Grid.ColumnSpan="2" 
+                    Content="Add Player"
+                    Grid.Row="6" Grid.ColumnSpan="2"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10"
                     IsEnabled="{Binding CanAddPlayer}"/>
             <Label Content="Team can have maximum of five players"
@@ -128,7 +127,7 @@
         <DataGrid ItemsSource="{Binding Players}" IsReadOnly="True"
                   Grid.Column="2" Grid.Row="2"
                   KeyboardNavigation.IsTabStop="False"/>
-        
+
         <Grid Grid.Row="1" Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
