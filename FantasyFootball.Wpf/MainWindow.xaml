@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FantasyFootball.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="850">
+        Title="Fantasy Football" Height="450" Width="850">
     <Grid>
     </Grid>
 </views:MvxWindow>

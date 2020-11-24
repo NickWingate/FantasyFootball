@@ -64,6 +64,7 @@ namespace FantasyFootball.Core.ViewModels
             set
             {
                 SetProperty(ref _playerFirstName, value);
+                RaisePropertyChanged(() => PlayerFirstName);
                 RaisePropertyChanged(() => PlayerFullName);
             }
         }
@@ -76,6 +77,7 @@ namespace FantasyFootball.Core.ViewModels
             set
             {
                 SetProperty(ref _playerLastName, value);
+                RaisePropertyChanged(() => PlayerLastName);
                 RaisePropertyChanged(() => PlayerFullName);
             }
         }

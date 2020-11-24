@@ -35,6 +35,9 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    <!--TODO:
+        - Seperate error message for null fields
+        - Load json file and save team-->
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -70,18 +73,33 @@
             </Grid.RowDefinitions>
             <!--Name-->
             <Label Content="First name:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding PlayerFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="PlayerFirstName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validators:StringValidationRule FieldName="First name" MaxLength="20"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
             <Label Content="Last name:" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding PlayerLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"  Grid.Column="1" VerticalAlignment="Center"/>
-
+            <TextBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                <TextBox.Text>
+                    <Binding Path="PlayerLastName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validators:StringValidationRule FieldName="Last name" MaxLength="20"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <!--Goals-->
             <Label Content="Goals:" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
                 <TextBox.Text>
                     <Binding Path="Goals" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:PositiveIntegerValidationRule ErrorMessage="Goals must be positive integer"/>
+                            <validators:NullPositiveIntegerValidationRule FieldName="Goals"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -93,7 +111,7 @@
                 <TextBox.Text>
                     <Binding Path="YellowCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:PositiveIntegerValidationRule ErrorMessage="Yellow cards must be positive integer"/>
+                            <validators:NullPositiveIntegerValidationRule FieldName="Yellow cards"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -105,7 +123,7 @@
                 <TextBox.Text>
                     <Binding Path="RedCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:PositiveIntegerValidationRule ErrorMessage="Red cards must be positive integer"/>
+                            <validators:NullPositiveIntegerValidationRule FieldName="Red cards"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
