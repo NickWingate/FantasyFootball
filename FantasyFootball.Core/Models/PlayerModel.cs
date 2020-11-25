@@ -2,15 +2,17 @@
 {
     public class PlayerModel
     {
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public int Goals { get; set; }
         public int YellowCards { get; set; }
         public int RedCards { get; set; }
         public int Value => 10 * Goals + -2 * YellowCards + -5 * RedCards;
 
-        public PlayerModel(string name, int goals, int yCards, int rCards)
+        public PlayerModel(string fName, string lName, int goals, int yCards, int rCards)
         {
-            Name = name;
+            FirstName = fName;
+            LastName = lName;
             Goals = goals;
             YellowCards = yCards;
             RedCards = rCards;

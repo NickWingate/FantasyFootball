@@ -21,40 +21,26 @@ using System.Collections.ObjectModel;
 
 namespace FantasyFootball.Core.ViewModels
 {
-    internal class TeamViewModel : MvxViewModel
+    public class TeamViewModel : MvxViewModel<string>
     {
         public TeamViewModel()
         {
             AddPlayerCommand = new MvxCommand(AddPlayer);
         }
+        public override void Prepare(string parameter)
+        {
+            TeamName = parameter;
+            Team = new TeamModel(TeamName);
+        }
+        public string TeamName { get; set; }
 
+        public TeamModel Team { get; set; }
         public IMvxCommand AddPlayerCommand { get; set; }
 
-        private ObservableCollection<PlayerModel> _players = new ObservableCollection<PlayerModel>();
+        public ObservableCollection<PlayerModel> Players 
+            => new ObservableCollection<PlayerModel>(Team.Players);
 
-        public ObservableCollection<PlayerModel> Players
-        {
-            get { return _players; }
-            set
-            {
-                SetProperty(ref _players, value);
-            }
-        }
-
-        public int Size => Players.Count;
-
-        public int TeamValue
-        {
-            get
-            {
-                int total = 0;
-                foreach (PlayerModel player in Players)
-                {
-                    total += player.Value;
-                }
-                return total;
-            }
-        }
+        public int TeamValue => Team.TeamValue;
 
         private string _playerFirstName;
 
@@ -65,7 +51,6 @@ namespace FantasyFootball.Core.ViewModels
             {
                 SetProperty(ref _playerFirstName, value);
                 RaisePropertyChanged(() => PlayerFirstName);
-                RaisePropertyChanged(() => PlayerFullName);
             }
         }
 
@@ -78,7 +63,6 @@ namespace FantasyFootball.Core.ViewModels
             {
                 SetProperty(ref _playerLastName, value);
                 RaisePropertyChanged(() => PlayerLastName);
-                RaisePropertyChanged(() => PlayerFullName);
             }
         }
 
@@ -123,21 +107,21 @@ namespace FantasyFootball.Core.ViewModels
             }
         }
 
-        public string PlayerFullName => $"{PlayerFirstName} {PlayerLastName}";
-        public bool IsPlayerLimitReached => Size >= 5;
+        public bool IsPlayerLimitReached => Team.TeamSize >= 5;
 
         public bool CanAddPlayer => uint.TryParse(Goals, out _)
             && uint.TryParse(YellowCards, out _)
             && uint.TryParse(RedCards, out _)
-            && Size < 5;
+            && Team.TeamSize < 5;
 
         public void AddPlayer()
         {
-            PlayerModel p = new PlayerModel(PlayerFullName,
+            PlayerModel p = new PlayerModel(PlayerFirstName,
+                PlayerLastName,
                 Convert.ToInt32(Goals),
                 Convert.ToInt32(YellowCards),
                 Convert.ToInt32(RedCards));
-            Players.Add(p);
+            Team.Players.Add(p);
             ClearFields();
             RaisePropertyChanged(() => Players);
             RaisePropertyChanged(() => TeamValue);
