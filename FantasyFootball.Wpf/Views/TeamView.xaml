@@ -155,10 +155,18 @@
                   Grid.Column="2" Grid.Row="2"
                   KeyboardNavigation.IsTabStop="False"
                   AutoGenerateColumns="False">
+            
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding FullName}"/>
                 <DataGridTextColumn Header="Value" Binding="{Binding Value}"/>
             </DataGrid.Columns>
+
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <Expander Expanded="Expander_Process" Collapsed="Expander_Process"/>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+
 
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
