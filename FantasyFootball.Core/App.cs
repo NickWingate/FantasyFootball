@@ -7,7 +7,7 @@ namespace FantasyFootball.Core
     {
         public override void Initialize()
         {
-            RegisterAppStart<TeamViewModel>();
+            RegisterAppStart<MenuViewModel>();
         }
     }
 }

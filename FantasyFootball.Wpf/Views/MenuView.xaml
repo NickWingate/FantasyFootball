@@ -1,0 +1,43 @@
+﻿<views:MvxWpfView
+        xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+        xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
+        x:Class="FantasyFootball.Wpf.Views.MenuView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:FantasyFootball.Wpf.Views"
+        mc:Ignorable="d" 
+        d:DesignHeight="450" d:DesignWidth="800"
+        Background="White"
+        FontFamily="Adobe Clean">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Label Content="Fantasy Football Manager" 
+               Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="60" FontFamily="Adobe Clean" FontWeight="ExtraLight"/>
+
+        <Button Content="New Team" FontSize="30"
+                mvx:Bi.nd="Command NewTeamCommand"
+                Grid.Row="2" Grid.Column="1" 
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Padding="50"/>
+        <Button Content="Load Team" FontSize="30"
+                mvx:Bi.nd="Command LoadTeamCommand"
+                Grid.Row="2" Grid.Column="2" 
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Padding="50"/>
+    </Grid>
+</views:MvxWpfView>
