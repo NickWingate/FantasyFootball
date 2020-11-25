@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 /* Write a program that allows users to create and store footballers
  * for a fantasy football team with the following characteristics:
@@ -147,7 +148,7 @@ namespace FantasyFootball.Core.ViewModels
             RaisePropertyChanged(() => TeamValue);
             RaisePropertyChanged(() => IsPlayerLimitReached);
         }
-        public async void SaveTeamToFile(string destinationFilePath)
+        public async Task SaveTeamToFile(string destinationFilePath)
         {
             var options = new JsonSerializerOptions
             {

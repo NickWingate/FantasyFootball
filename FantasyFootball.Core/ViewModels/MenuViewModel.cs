@@ -1,10 +1,14 @@
-﻿using MvvmCross.Commands;
+﻿using FantasyFootball.Core.Models;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace FantasyFootball.Core.ViewModels
 {
@@ -15,24 +19,22 @@ namespace FantasyFootball.Core.ViewModels
         {
             _navigationService = navigationService;
             NewTeamCommand = new MvxCommand(NewTeam);
-            LoadTeamCommand = new MvxCommand(LoadTeam);
         }
         public IMvxCommand NewTeamCommand { get; set; }
-        public IMvxCommand LoadTeamCommand { get; set; }
-
+        public async Task LoadTeam(string sourceFilePath)
+        {
+            TeamModel team;
+            Debug.WriteLine(sourceFilePath);
+            using (FileStream fs = File.OpenRead(@sourceFilePath))
+            {
+                team = await JsonSerializer.DeserializeAsync<TeamModel>(fs);
+            }
+            await _navigationService.Navigate<TeamViewModel, Object>(team);
+        }
         private void NewTeam()
         {
             Debug.WriteLine("New Team Button Clicked");
             _navigationService.Navigate<TeamNameViewModel>();
-            // Get Team Name
-            // Pass into TeamViewModel
-        }
-        private void LoadTeam()
-        {
-            Debug.WriteLine("Load Team Button Clicked");
-            // Open File
-            //
-            // Pass into TeamViewModel
         }
     }
 }

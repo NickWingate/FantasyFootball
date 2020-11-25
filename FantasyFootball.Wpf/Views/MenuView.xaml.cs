@@ -1,4 +1,6 @@
-﻿using MvvmCross.Platforms.Wpf.Views;
+﻿using FantasyFootball.Core.ViewModels;
+using Microsoft.Win32;
+using MvvmCross.Platforms.Wpf.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +24,18 @@ namespace FantasyFootball.Wpf.Views
         public MenuView()
         {
             InitializeComponent();
+        }
+        private void GetFileLocation_OnClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json|Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                string sourceFilePath = dialog.FileName;
+                (this.DataContext as MenuViewModel)?.LoadTeam(sourceFilePath);
+            }
         }
     }
 }

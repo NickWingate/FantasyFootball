@@ -10,13 +10,13 @@
         public int RedCards { get; set; }
         public int Value => 10 * Goals + -2 * YellowCards + -5 * RedCards;
 
-        public PlayerModel(string fName, string lName, int goals, int yCards, int rCards)
+        public PlayerModel(string firstName, string lastName, int goals, int yellowCards, int redCards)
         {
-            FirstName = fName;
-            LastName = lName;
+            FirstName = firstName;
+            LastName = lastName;
             Goals = goals;
-            YellowCards = yCards;
-            RedCards = rCards;
+            YellowCards = yellowCards;
+            RedCards = redCards;
         }
     }
 }

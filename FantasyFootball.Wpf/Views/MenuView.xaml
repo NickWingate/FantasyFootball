@@ -35,7 +35,7 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Padding="50"/>
         <Button Content="Load Team" FontSize="30"
-                mvx:Bi.nd="Command LoadTeamCommand"
+                Click="GetFileLocation_OnClick"
                 Grid.Row="2" Grid.Column="2" 
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Padding="50"/>
