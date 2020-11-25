@@ -4,6 +4,7 @@
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
         public int Goals { get; set; }
         public int YellowCards { get; set; }
         public int RedCards { get; set; }
