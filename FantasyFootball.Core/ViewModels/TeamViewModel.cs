@@ -3,6 +3,7 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 /* Write a program that allows users to create and store footballers
  * for a fantasy football team with the following characteristics:
@@ -109,12 +110,17 @@ namespace FantasyFootball.Core.ViewModels
 
         public bool IsPlayerLimitReached => Team.TeamSize >= 5;
 
+        // Must be a better way to do this
         public bool CanAddPlayer => uint.TryParse(Goals, out _)
             && uint.TryParse(YellowCards, out _)
             && uint.TryParse(RedCards, out _)
-            && Team.TeamSize < 5;
+            && Team.TeamSize < 5
+            && !String.IsNullOrWhiteSpace(PlayerFirstName)
+            && PlayerFirstName.Length <= 20
+            && !String.IsNullOrWhiteSpace(PlayerLastName)
+            && PlayerLastName.Length <= 20;
 
-        public void AddPlayer()
+        private void AddPlayer()
         {
             PlayerModel p = new PlayerModel(PlayerFirstName,
                 PlayerLastName,
@@ -126,6 +132,10 @@ namespace FantasyFootball.Core.ViewModels
             RaisePropertyChanged(() => Players);
             RaisePropertyChanged(() => TeamValue);
             RaisePropertyChanged(() => IsPlayerLimitReached);
+        }
+        public void SaveTeamToFile(string destinationFilePath)
+        {
+            Debug.WriteLine(destinationFilePath);
         }
 
         private void ClearFields()
