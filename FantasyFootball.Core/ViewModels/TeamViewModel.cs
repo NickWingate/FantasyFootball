@@ -4,6 +4,8 @@ using MvvmCross.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 
 /* Write a program that allows users to create and store footballers
  * for a fantasy football team with the following characteristics:
@@ -22,16 +24,28 @@ using System.Diagnostics;
 
 namespace FantasyFootball.Core.ViewModels
 {
-    public class TeamViewModel : MvxViewModel<string>
+    public class TeamViewModel : MvxViewModel<Object>
     {
         public TeamViewModel()
         {
             AddPlayerCommand = new MvxCommand(AddPlayer);
         }
-        public override void Prepare(string parameter)
+        public override void Prepare(Object parameter)
         {
-            TeamName = parameter;
-            Team = new TeamModel(TeamName);
+            if (parameter.GetType() == typeof(String))
+            {
+                TeamName = (string)parameter;
+                Team = new TeamModel(TeamName);
+            }
+            else if (parameter.GetType() == typeof(TeamModel))
+            {
+                Team = (TeamModel)parameter;
+            }
+            Debug.Write(parameter.GetType());
+            Debug.Write(Team.GetType());
+            //FantasyFootball.Core.Models.TeamModel
+
+
         }
         public string TeamName { get; set; }
 
@@ -133,9 +147,17 @@ namespace FantasyFootball.Core.ViewModels
             RaisePropertyChanged(() => TeamValue);
             RaisePropertyChanged(() => IsPlayerLimitReached);
         }
-        public void SaveTeamToFile(string destinationFilePath)
+        public async void SaveTeamToFile(string destinationFilePath)
         {
-            Debug.WriteLine(destinationFilePath);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                IgnoreReadOnlyProperties = true
+            };
+            using (FileStream fs = File.Create(@destinationFilePath))
+            {
+                await JsonSerializer.SerializeAsync(fs, Team, options);
+            }
         }
 
         private void ClearFields()

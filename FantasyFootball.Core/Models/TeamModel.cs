@@ -24,7 +24,6 @@ namespace FantasyFootball.Core.Models
                 return total;
             }
         }
-        public int MaxTeamSize { get; set; }
         public int TeamSize => Players.Count;
         public string TeamName { get; set; }
     }

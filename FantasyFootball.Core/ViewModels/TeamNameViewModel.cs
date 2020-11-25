@@ -35,7 +35,7 @@ namespace FantasyFootball.Core.ViewModels
 
         private void CreateTeam()
         {
-            _navigationService.Navigate<TeamViewModel, string>(TeamName);
+            _navigationService.Navigate<TeamViewModel, Object>(TeamName);
         }
 
     }

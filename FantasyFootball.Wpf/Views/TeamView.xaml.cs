@@ -30,6 +30,7 @@ namespace FantasyFootball.Wpf.Views
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "JSON Files (*.json)|*.json|Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            dialog.FileName = (this.DataContext as TeamViewModel)?.TeamName;
             if (dialog.ShowDialog() == true)
             {
                 string destinationFilePath = dialog.FileName;
