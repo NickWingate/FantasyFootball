@@ -1,5 +1,6 @@
 ﻿using FantasyFootball.Core.Models;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.ObjectModel;
@@ -27,8 +28,10 @@ namespace FantasyFootball.Core.ViewModels
 {
     public class TeamViewModel : MvxViewModel<Object>
     {
-        public TeamViewModel()
+        private readonly IMvxNavigationService _navigationService;
+        public TeamViewModel(IMvxNavigationService navigationService)
         {
+            _navigationService = navigationService;
             AddPlayerCommand = new MvxCommand(AddPlayer);
         }
         public override void Prepare(Object parameter)
@@ -37,16 +40,13 @@ namespace FantasyFootball.Core.ViewModels
             {
                 TeamName = (string)parameter;
                 Team = new TeamModel(TeamName);
+                IsTeamSaved = false;
             }
             else if (parameter.GetType() == typeof(TeamModel))
             {
                 Team = (TeamModel)parameter;
+                IsTeamSaved = true;
             }
-            Debug.Write(parameter.GetType());
-            Debug.Write(Team.GetType());
-            //FantasyFootball.Core.Models.TeamModel
-
-
         }
         public string TeamName { get; set; }
 
@@ -126,7 +126,8 @@ namespace FantasyFootball.Core.ViewModels
         public bool IsPlayerLimitReached => Team.TeamSize >= 5;
 
         // Must be a better way to do this
-        public bool CanAddPlayer => uint.TryParse(Goals, out _)
+        public bool CanAddPlayer 
+            => uint.TryParse(Goals, out _)
             && uint.TryParse(YellowCards, out _)
             && uint.TryParse(RedCards, out _)
             && Team.TeamSize < 5
@@ -134,19 +135,20 @@ namespace FantasyFootball.Core.ViewModels
             && PlayerFirstName.Length <= 20
             && !String.IsNullOrWhiteSpace(PlayerLastName)
             && PlayerLastName.Length <= 20;
-
+        public bool IsTeamSaved { get; set; }
         private void AddPlayer()
         {
             PlayerModel p = new PlayerModel(PlayerFirstName,
                 PlayerLastName,
-                Convert.ToInt32(Goals),
-                Convert.ToInt32(YellowCards),
-                Convert.ToInt32(RedCards));
+                Convert.ToUInt32(Goals),
+                Convert.ToUInt32(YellowCards),
+                Convert.ToUInt32(RedCards));
             Team.Players.Add(p);
             ClearFields();
             RaisePropertyChanged(() => Players);
             RaisePropertyChanged(() => TeamValue);
             RaisePropertyChanged(() => IsPlayerLimitReached);
+            IsTeamSaved = false;
         }
         public async Task SaveTeamToFile(string destinationFilePath)
         {
@@ -159,6 +161,11 @@ namespace FantasyFootball.Core.ViewModels
             {
                 await JsonSerializer.SerializeAsync(fs, Team, options);
             }
+            IsTeamSaved = true;
+        }
+        public void NavigateToMainMenu()
+        {
+            _navigationService.Navigate<MenuViewModel>();   
         }
 
         private void ClearFields()

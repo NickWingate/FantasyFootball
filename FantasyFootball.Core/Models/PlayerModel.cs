@@ -5,12 +5,12 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {LastName}";
-        public int Goals { get; set; }
-        public int YellowCards { get; set; }
-        public int RedCards { get; set; }
-        public int Value => 10 * Goals + -2 * YellowCards + -5 * RedCards;
+        public uint Goals { get; set; }
+        public uint YellowCards { get; set; }
+        public uint RedCards { get; set; }
+        public int Value => 10 * (int)Goals + -2 * (int)YellowCards + -5 * (int)RedCards;
 
-        public PlayerModel(string firstName, string lastName, int goals, int yellowCards, int redCards)
+        public PlayerModel(string firstName, string lastName, uint goals, uint yellowCards, uint redCards)
         {
             FirstName = firstName;
             LastName = lastName;

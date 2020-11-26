@@ -149,6 +149,11 @@
             <Label Content="{Binding TeamValue}" FontWeight="Bold"
                    Grid.Column="1"/>
         </WrapPanel>
+        <Button Grid.Row="1" Grid.Column="2" 
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Padding="10"
+                Content="Exit to main menu" FontSize="15"
+                Click="ExitToMainMenu_OnClick"/>
 
         <DataGrid ItemsSource="{Binding Players}" 
                   IsReadOnly="True"

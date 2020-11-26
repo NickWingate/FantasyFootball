@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows.Controls;
 
 namespace FantasyFootball.Wpf.ValidationRules
@@ -9,14 +10,14 @@ namespace FantasyFootball.Wpf.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             ValidationResult result = new ValidationResult(true, null);
-            string inputString = (value ?? string.Empty).ToString();
-            if (string.IsNullOrWhiteSpace(inputString))
+            //string inputString = (value ?? string.Empty).ToString();
+            if (string.IsNullOrWhiteSpace((string)value))
             {
                 result = new ValidationResult(false, $"{FieldName} cannot be empty");
             }
-            else if (!uint.TryParse(inputString, out _))
+            else if (!uint.TryParse((string)value, out _))
             {
-                result = new ValidationResult(false, $"{FieldName} must be positive integer");
+                result = new ValidationResult(false, $"{FieldName} must be positive integer less than 4,294,967,295");
             }
             return result;
         }
