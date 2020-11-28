@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Windows.Controls;
@@ -15,6 +16,7 @@ namespace FantasyFootball.Wpf.ValidationRules
         {
             ValidationResult result = new ValidationResult(true, null);
             string inputString = (value ?? string.Empty).ToString();
+            Debug.WriteLine(inputString);
             if (String.IsNullOrWhiteSpace(inputString))
             {
                 result = new ValidationResult(false, $"{FieldName} cannot be empty");

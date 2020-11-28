@@ -8,6 +8,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:FantasyFootball.Wpf.Views"
         xmlns:validators="clr-namespace:FantasyFootball.Wpf.ValidationRules"
+        xmlns:convertors="clr-namespace:FantasyFootball.Wpf.Converters"
         xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="900"
@@ -17,8 +18,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/TextBoxValidator.xaml"/>
                 <ResourceDictionary Source="../Styles/RoundedButton.xaml"/>
+                <ResourceDictionary Source="../Styles/TextBoxDesign.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <convertors:InverseAndBooleansToBooleanConverter x:Key="InverseAndBooleansToBooleanConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -56,8 +59,8 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <!--First Name-->
-            <Label Content="First name:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" VerticalAlignment="Center">
+            <Label Content="First name:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Name="FirstNameTxtBox" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="0">
                 <TextBox.Text>
                     <Binding Path="PlayerFirstName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -68,7 +71,7 @@
             </TextBox>
             <!--Last Name-->
             <Label Content="Last name:" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+            <TextBox Name="LastNameTxtBox" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="1">
                 <TextBox.Text>
                     <Binding Path="PlayerLastName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -79,7 +82,7 @@
             </TextBox>
             <!--Goals-->
             <Label Content="Goals:" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+            <TextBox Name="GoalsTxtBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="2">
                 <TextBox.Text>
                     <Binding Path="Goals" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -91,7 +94,7 @@
 
             <!--Yellow Cards-->
             <Label Content="Yellow Cards:" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+            <TextBox Name="YellowCardsTxtBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="3">
                 <TextBox.Text>
                     <Binding Path="YellowCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -103,7 +106,7 @@
 
             <!--Red Cards-->
             <Label Content="Red Cards:" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
+            <TextBox Name="RedCardsTxtBox" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="4">
                 <TextBox.Text>
                     <Binding Path="RedCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -113,7 +116,7 @@
                 </TextBox.Text>
             </TextBox>
 
-            <!--AddPlayers-->
+            
             <Label Content="Team can have maximum of five players"
                    FontSize="10" Foreground="Red"
                    HorizontalAlignment="Center"
@@ -132,13 +135,14 @@
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 Content="Exit to main menu" FontSize="15"
                 Click="ExitToMainMenu_OnClick"
-                Style="{DynamicResource RoundedButtonStyle}"/>
+                Style="{DynamicResource RoundedButtonStyle}"
+                TabIndex="7"/>
 
         <DataGrid ItemsSource="{Binding Players}" 
                   IsReadOnly="True"
                   Grid.Column="2" Grid.Row="2"
-                  KeyboardNavigation.IsTabStop="False"
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False"
+                  IsTabStop="False">
             
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding FullName}"/>
@@ -188,9 +192,20 @@
         <Button mvx:Bi.nd="Command AddPlayerCommand"
                     Content="Add Player"
                     Grid.Row="3" Grid.Column="1"
-                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10"
-                    IsEnabled="{Binding CanAddPlayer}"
-                    Style="{DynamicResource RoundedButtonStyle}"/>
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Padding="10"
+                    Style="{DynamicResource RoundedButtonStyle}"
+                    TabIndex="5">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}">
+                    <Binding ElementName="FirstNameTxtBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="LastNameTxtBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="GoalsTxtBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="YellowCardsTxtBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="RedCardsTxtBox" Path="(Validation.HasError)"/>
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
 
         <!--https://stackoverflow.com/a/64861760/14106896 
         - How to save file while maintaining MVVM
@@ -198,7 +213,8 @@
         <Button Content="Save Team" Grid.Column="2" Grid.Row="3"
                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Padding="10" Click="SaveTeamToFile_OnClick"
-                Style="{DynamicResource RoundedButtonStyle}"/>
+                Style="{DynamicResource RoundedButtonStyle}"
+                TabIndex="6"/>
 
     </Grid>
 </views:MvxWpfView>

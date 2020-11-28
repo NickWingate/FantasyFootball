@@ -1,14 +1,15 @@
 ﻿<views:MvxWpfView
         xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
         xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
-        xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
-        xmlns:validators="clr-namespace:FantasyFootball.Wpf.ValidationRules"
         x:Class="FantasyFootball.Wpf.Views.TeamNameView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:local="clr-namespace:FantasyFootball.Wpf.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+        xmlns:converters="clr-namespace:FantasyFootball.Wpf.Converters"
+        xmlns:local="clr-namespace:FantasyFootball.Wpf.Views" 
+        xmlns:validators="clr-namespace:FantasyFootball.Wpf.ValidationRules"
         mc:Ignorable="d" 
         d:DesignHeight="450" d:DesignWidth="800"
         Background="White"
@@ -18,26 +19,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FantasyFootball.Wpf;component/Styles/TextBoxValidator.xaml"/>
                 <ResourceDictionary Source="/FantasyFootball.Wpf;component/Styles/RoundedButton.xaml"/>
+                <ResourceDictionary Source="../Styles/TextBoxDesign.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-            <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
-            <ControlTemplate x:Key="TextBoxDesign" TargetType="{x:Type TextBoxBase}">
-                <Border x:Name="border" CornerRadius="10" Background="#FFDDDDDD" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
-                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                </Border>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsEnabled" Value="false">
-                        <Setter Property="Opacity" TargetName="border" Value="0.56"/>
-                        <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
-                    </Trigger>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
-                    </Trigger>
-                    <Trigger Property="IsKeyboardFocused" Value="true">
-                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
+            <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:InverseAndBooleansToBooleanConverter x:Key="InverseAndBooleansToBooleanConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -57,7 +42,8 @@
                FontSize="60" FontWeight="UltraLight"
                Grid.Column="1" Grid.Row="1"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Template="{DynamicResource TextBoxDesign}" Grid.Row="2" Grid.Column="1" 
+        <TextBox x:Name="TeamNameTxtBox"
+                 Template="{DynamicResource TextBoxDesign}" Grid.Row="2" Grid.Column="1" 
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  MinWidth="300"
                  FontSize="25">
@@ -70,15 +56,24 @@
             </TextBox.Text>
         </TextBox>
 
-        <Button Style="{DynamicResource RoundedButtonStyle}" 
+        <!--<Label Content="Team name cannot be empty"
+                   FontSize="10" Foreground="Red"
+                   HorizontalAlignment="Center"
+                   Visibility="{Binding NotCanCreateTeam, Converter={StaticResource BooleanToVisibilityConverter}}"
+                   Grid.Row="3" Grid.Column="1"/>-->
+
+        <Button Style="{DynamicResource RoundedButtonStyle}"
                 mvx:Bi.nd="Command CreateTeamCommand"
                 Padding="15"
-                IsEnabled="{Binding CanCreateTeam}"
                 Content="Create Team"
                 Grid.Column="1" Grid.Row="3"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 FontSize="30" FontWeight="Normal">
-
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}" Mode="TwoWay">
+                    <Binding ElementName="TeamNameTxtBox" Path="(Validation.HasError)"/>
+                </MultiBinding>
+            </Button.IsEnabled>
         </Button>
     </Grid>
 </views:MvxWpfView>

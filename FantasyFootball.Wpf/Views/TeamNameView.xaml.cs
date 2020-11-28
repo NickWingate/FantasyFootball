@@ -1,6 +1,7 @@
 ﻿using MvvmCross.Platforms.Wpf.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,5 +24,15 @@ namespace FantasyFootball.Wpf.Views
         {
             InitializeComponent();
         }
+        private bool IsValid(DependencyObject obj)
+        {
+            // The dependency object is valid if it has no errors and all
+            // of its children (that are dependency objects) are error-free.
+            return !Validation.GetHasError(obj) &&
+            LogicalTreeHelper.GetChildren(obj)
+            .OfType<DependencyObject>()
+            .All(IsValid);
+        }
+        public bool ValidTeamName => IsValid(TeamNameTxtBox);
     }
 }

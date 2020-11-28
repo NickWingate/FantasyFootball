@@ -89,11 +89,10 @@ namespace FantasyFootball.Core.ViewModels
             get { return _goals; }
             set
             {
-                if (SetProperty(ref _goals, value))
-                {
-                    RaisePropertyChanged(() => Goals);
-                    RaisePropertyChanged(() => CanAddPlayer);
-                }
+                SetProperty(ref _goals, value);                
+                RaisePropertyChanged(() => Goals);
+                RaisePropertyChanged(() => CanAddPlayer);
+             
             }
         }
 
@@ -123,14 +122,14 @@ namespace FantasyFootball.Core.ViewModels
             }
         }
 
-        public bool IsPlayerLimitReached => Team.TeamSize >= 5;
+        public bool IsPlayerLimitReached => (Team.TeamSize >= 5);
 
         // Must be a better way to do this
         public bool CanAddPlayer 
             => uint.TryParse(Goals, out _)
             && uint.TryParse(YellowCards, out _)
             && uint.TryParse(RedCards, out _)
-            && Team.TeamSize < 5
+            && !IsPlayerLimitReached
             && !String.IsNullOrWhiteSpace(PlayerFirstName)
             && PlayerFirstName.Length <= 20
             && !String.IsNullOrWhiteSpace(PlayerLastName)

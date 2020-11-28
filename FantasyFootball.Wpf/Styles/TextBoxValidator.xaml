@@ -11,7 +11,7 @@
                                    Content="{Binding ElementName=MyAdorner,
                                                      Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
                         </Label>
-                        <Border BorderBrush="Red" BorderThickness="1">
+                        <Border BorderBrush="Red" CornerRadius="10"  BorderThickness="1">
                             <AdornedElementPlaceholder Name="MyAdorner"/>
                         </Border>
                     </StackPanel>

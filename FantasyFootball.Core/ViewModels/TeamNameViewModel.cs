@@ -3,6 +3,7 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace FantasyFootball.Core.ViewModels
@@ -24,14 +25,15 @@ namespace FantasyFootball.Core.ViewModels
             get { return _teamName; }
             set 
             {
-                if (SetProperty(ref _teamName, value))
-                {
-                    RaisePropertyChanged(() => TeamName);
-                    RaisePropertyChanged(() => CanCreateTeam);
-                }
+                SetProperty(ref _teamName, value);
+                RaisePropertyChanged(() => TeamName);
+                RaisePropertyChanged(() => CanCreateTeam);
+                RaisePropertyChanged(() => NotCanCreateTeam);
             }
         }
         public bool CanCreateTeam => !String.IsNullOrWhiteSpace(TeamName);
+        // easier than inverting a bool in xaml binding
+        public bool NotCanCreateTeam => String.IsNullOrWhiteSpace(TeamName);
 
         private void CreateTeam()
         {
