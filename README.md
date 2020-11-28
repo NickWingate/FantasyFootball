@@ -16,7 +16,7 @@ The team scores 10 points per goal, -5 for a red card and -2 for a yellow card.
 When calculating the team's value, the stats of each player is read from
 the file and the stored values are used to calculate the current value of the team.
 
-## Resources I used(in no particular order):
+## Resources I used (in no particular order):
 - [Asynchronous Programming - Tim Corey](https://www.youtube.com/watch?v=2moh18sh5p4)
 - [MvvmCross basic tutorial - Tim Corey](https://www.youtube.com/watch?v=8E000zu8UhQ)
 - [MvvmCross Documentation](https://www.mvvmcross.com/documentation/)
@@ -25,3 +25,4 @@ the file and the stored values are used to calculate the current value of the te
 - [Implementing CommonDialogs in MVVM](https://stackoverflow.com/a/64861760/14106896)
 - [Expand Colapse with DataGrid](https://stackoverflow.com/questions/3829137/i-need-the-expand-collapse-for-rowdetailstemplate)
 - [MvvmCross Sample Project](https://github.com/MvvmCross/MvvmCross-Samples/tree/master/StarWarsSample)
+- [Disable button on validation error](https://stackoverflow.com/a/32810399/14106896)
