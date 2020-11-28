@@ -14,26 +14,31 @@
         Background="White"
         FontFamily="Adobe Clean">
     <UserControl.Resources>
-        <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <StackPanel>
-                            <Label DockPanel.Dock="Bottom"
-                                   Foreground="Red"
-                                   FontSize="10"
-                                   Content="{Binding ElementName=MyAdorner,
-                                                     Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
-                            </Label>
-                            <Border BorderBrush="Red" BorderThickness="1">
-                                <AdornedElementPlaceholder Name="MyAdorner"/>
-                            </Border>
-                        </StackPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FantasyFootball.Wpf;component/Styles/TextBoxValidator.xaml"/>
+                <ResourceDictionary Source="/FantasyFootball.Wpf;component/Styles/RoundedButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+            <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+            <ControlTemplate x:Key="TextBoxDesign" TargetType="{x:Type TextBoxBase}">
+                <Border x:Name="border" CornerRadius="10" Background="#FFDDDDDD" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="true">
+                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -52,7 +57,7 @@
                FontSize="60" FontWeight="UltraLight"
                Grid.Column="1" Grid.Row="1"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="2" Grid.Column="1" 
+        <TextBox Template="{DynamicResource TextBoxDesign}" Grid.Row="2" Grid.Column="1" 
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  MinWidth="300"
                  FontSize="25">
@@ -65,12 +70,15 @@
             </TextBox.Text>
         </TextBox>
 
-        <Button mvx:Bi.nd="Command CreateTeamCommand"
+        <Button Style="{DynamicResource RoundedButtonStyle}" 
+                mvx:Bi.nd="Command CreateTeamCommand"
+                Padding="15"
                 IsEnabled="{Binding CanCreateTeam}"
                 Content="Create Team"
                 Grid.Column="1" Grid.Row="3"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Padding="10"
-                FontSize="30" FontWeight="Normal"/>
+                FontSize="30" FontWeight="Normal">
+
+        </Button>
     </Grid>
 </views:MvxWpfView>

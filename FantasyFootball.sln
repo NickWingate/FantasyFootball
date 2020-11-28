@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootball.Core", "FantasyFootball.Core\FantasyFootball.Core.csproj", "{7E98F402-B5C7-47B3-974A-E0FFCB572FD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FantasyFootball.Core", "FantasyFootball.Core\FantasyFootball.Core.csproj", "{7E98F402-B5C7-47B3-974A-E0FFCB572FD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootball.Wpf", "FantasyFootball.Wpf\FantasyFootball.Wpf.csproj", "{793AE80B-3251-47B2-A624-A8B0AF7B2889}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FantasyFootball.Wpf", "FantasyFootball.Wpf\FantasyFootball.Wpf.csproj", "{793AE80B-3251-47B2-A624-A8B0AF7B2889}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,6 +11,13 @@
         d:DesignHeight="450" d:DesignWidth="800"
         Background="White"
         FontFamily="Adobe Clean">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/RoundedButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -33,11 +40,13 @@
                 mvx:Bi.nd="Command NewTeamCommand"
                 Grid.Row="2" Grid.Column="1" 
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Padding="50"/>
+                Padding="50"
+                Style="{DynamicResource RoundedButtonStyle}"/>
         <Button Content="Load Team" FontSize="30"
                 Click="GetFileLocation_OnClick"
                 Grid.Row="2" Grid.Column="2" 
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Padding="50"/>
+                Padding="50"
+                Style="{DynamicResource RoundedButtonStyle}"/>
     </Grid>
 </views:MvxWpfView>
