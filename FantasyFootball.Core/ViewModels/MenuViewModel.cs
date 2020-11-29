@@ -3,10 +3,8 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -14,13 +12,20 @@ namespace FantasyFootball.Core.ViewModels
 {
     public class MenuViewModel : MvxViewModel
     {
+        // MvvmCross navigation service depencency injection
         private readonly IMvxNavigationService _navigationService;
+
         public MenuViewModel(IMvxNavigationService navigationService)
         {
             _navigationService = navigationService;
             NewTeamCommand = new MvxCommand(NewTeam);
         }
+
         public IMvxCommand NewTeamCommand { get; set; }
+
+        /// <summary>
+        /// Deserialize json file asynchronously
+        /// </summary>
         public async Task LoadTeam(string sourceFilePath)
         {
             TeamModel team;
@@ -29,11 +34,12 @@ namespace FantasyFootball.Core.ViewModels
             {
                 team = await JsonSerializer.DeserializeAsync<TeamModel>(fs);
             }
+            // Pass team instance into TeamVM
             await _navigationService.Navigate<TeamViewModel, Object>(team);
         }
+
         private void NewTeam()
         {
-            Debug.WriteLine("New Team Button Clicked");
             _navigationService.Navigate<TeamNameViewModel>();
         }
     }

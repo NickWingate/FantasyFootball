@@ -4,7 +4,6 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,12 +27,18 @@ namespace FantasyFootball.Core.ViewModels
 {
     public class TeamViewModel : MvxViewModel<Object>
     {
+        // Navigation service dependency injection
         private readonly IMvxNavigationService _navigationService;
+
         public TeamViewModel(IMvxNavigationService navigationService)
         {
             _navigationService = navigationService;
             AddPlayerCommand = new MvxCommand(AddPlayer);
         }
+
+        /// <summary>
+        /// Generates team based on teamname or TeamModel object passed into ViewModel
+        /// </summary>
         public override void Prepare(Object parameter)
         {
             if (parameter.GetType() == typeof(String))
@@ -48,18 +53,9 @@ namespace FantasyFootball.Core.ViewModels
                 IsTeamSaved = true;
             }
         }
-        public string TeamName { get; set; }
 
-        public TeamModel Team { get; set; }
-        public IMvxCommand AddPlayerCommand { get; set; }
-
-        public ObservableCollection<PlayerModel> Players 
-            => new ObservableCollection<PlayerModel>(Team.Players);
-
-        public int TeamValue => Team.TeamValue;
-
+        // Textbox properties
         private string _playerFirstName;
-
         public string PlayerFirstName
         {
             get { return _playerFirstName; }
@@ -71,7 +67,6 @@ namespace FantasyFootball.Core.ViewModels
         }
 
         private string _playerLastName;
-
         public string PlayerLastName
         {
             get { return _playerLastName; }
@@ -83,21 +78,17 @@ namespace FantasyFootball.Core.ViewModels
         }
 
         private string _goals;
-
         public string Goals
         {
             get { return _goals; }
             set
             {
-                SetProperty(ref _goals, value);                
+                SetProperty(ref _goals, value);
                 RaisePropertyChanged(() => Goals);
-                RaisePropertyChanged(() => CanAddPlayer);
-             
             }
         }
 
         private string _yellowCards;
-
         public string YellowCards
         {
             get { return _yellowCards; }
@@ -105,12 +96,10 @@ namespace FantasyFootball.Core.ViewModels
             {
                 SetProperty(ref _yellowCards, value);
                 RaisePropertyChanged(() => YellowCards);
-                RaisePropertyChanged(() => CanAddPlayer);
             }
         }
 
         private string _redCards;
-
         public string RedCards
         {
             get { return _redCards; }
@@ -118,23 +107,22 @@ namespace FantasyFootball.Core.ViewModels
             {
                 SetProperty(ref _redCards, value);
                 RaisePropertyChanged(() => RedCards);
-                RaisePropertyChanged(() => CanAddPlayer);
             }
         }
 
+        // Other properties
+        public TeamModel Team { get; set; }
+        public ObservableCollection<PlayerModel> Players 
+            => new ObservableCollection<PlayerModel>(Team.Players); 
+        public int TeamValue => Team.TeamValue;
         public bool IsPlayerLimitReached => (Team.TeamSize >= 5);
-
-        // Must be a better way to do this
-        public bool CanAddPlayer 
-            => uint.TryParse(Goals, out _)
-            && uint.TryParse(YellowCards, out _)
-            && uint.TryParse(RedCards, out _)
-            && !IsPlayerLimitReached
-            && !String.IsNullOrWhiteSpace(PlayerFirstName)
-            && PlayerFirstName.Length <= 20
-            && !String.IsNullOrWhiteSpace(PlayerLastName)
-            && PlayerLastName.Length <= 20;
         public bool IsTeamSaved { get; set; }
+        public string TeamName { get; set; }
+        public IMvxCommand AddPlayerCommand { get; set; }
+
+        /// <summary>
+        /// Add player to team
+        /// </summary>
         private void AddPlayer()
         {
             PlayerModel p = new PlayerModel(PlayerFirstName,
@@ -149,6 +137,10 @@ namespace FantasyFootball.Core.ViewModels
             RaisePropertyChanged(() => IsPlayerLimitReached);
             IsTeamSaved = false;
         }
+
+        /// <summary>
+        /// Serialize TeamModel to JSON and save to file
+        /// </summary>
         public async Task SaveTeamToFile(string destinationFilePath)
         {
             var options = new JsonSerializerOptions
@@ -162,9 +154,10 @@ namespace FantasyFootball.Core.ViewModels
             }
             IsTeamSaved = true;
         }
+
         public void NavigateToMainMenu()
         {
-            _navigationService.Navigate<MenuViewModel>();   
+            _navigationService.Navigate<MenuViewModel>();
         }
 
         private void ClearFields()
