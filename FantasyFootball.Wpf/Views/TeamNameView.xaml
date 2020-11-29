@@ -24,6 +24,7 @@
             <converters:InverseAndBooleansToBooleanConverter x:Key="InverseAndBooleansToBooleanConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
+    <!--MainGrid-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -37,10 +38,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
+        
+        <!--Title-->
         <Label Content="Team Name" 
                FontSize="60" FontWeight="UltraLight"
                Grid.Column="1" Grid.Row="1"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
         <TextBox x:Name="TeamNameTxtBox"
                  Template="{DynamicResource TextBoxDesign}" Grid.Row="2" Grid.Column="1" 
                  HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -55,6 +59,7 @@
             </TextBox.Text>
         </TextBox>
 
+        <!--Create Team Button-->
         <Button Style="{DynamicResource RoundedButtonStyle}"
                 mvx:Bi.nd="Command CreateTeamCommand"
                 Padding="15"

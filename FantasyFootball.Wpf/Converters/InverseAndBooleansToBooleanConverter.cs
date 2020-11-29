@@ -8,7 +8,7 @@ namespace FantasyFootball.Wpf.Converters
 {
     //https://stackoverflow.com/a/32810399/14106896
     /// <summary>
-    /// Invert array of bools
+    /// Invert array of bools for multibinding
     /// </summary>
     public class InverseAndBooleansToBooleanConverter : IMultiValueConverter
     {

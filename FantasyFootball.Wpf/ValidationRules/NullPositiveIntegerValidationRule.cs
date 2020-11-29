@@ -4,6 +4,9 @@ using System.Windows.Controls;
 
 namespace FantasyFootball.Wpf.ValidationRules
 {
+    /// <summary>
+    /// Validates whether the valie is not null, and is non negative(i.e. postive numbers incliding 0) 
+    /// </summary>
     public class NullPositiveIntegerValidationRule : ValidationRule
     {
         public string FieldName { get; set; }

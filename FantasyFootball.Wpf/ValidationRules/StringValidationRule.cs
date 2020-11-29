@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace FantasyFootball.Wpf.ValidationRules
 {
+    /// <summary>
+    /// Validates whether value is empty or greater than max length
+    /// </summary>
     public class StringValidationRule : ValidationRule
     {
         public int MaxLength { get; set; }

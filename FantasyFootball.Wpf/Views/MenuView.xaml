@@ -17,6 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    <!--Main grid-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -30,11 +31,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
+        <!--Title-->
         <Label Content="Fantasy Football Manager" 
                Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                HorizontalAlignment="Center" VerticalAlignment="Center"
                FontSize="60" FontFamily="Adobe Clean" FontWeight="ExtraLight"/>
-
+        
+        <!--Buttons-->
         <Button Content="New Team" FontSize="30"
                 mvx:Bi.nd="Command NewTeamCommand"
                 Grid.Row="2" Grid.Column="1" 
