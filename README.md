@@ -1,6 +1,8 @@
 # Fantasy Football
 WPF FantasyFootball application
 
+![](Screenshots/FantasyFootball.gif)
+
 ## Instructions:
 Write a program that allows users to create and store footballers 
 for a fantasy football team with the following characteristics:
