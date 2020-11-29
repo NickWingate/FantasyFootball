@@ -1,5 +1,7 @@
-# FantasyFootball
+# Fantasy Football
 WPF FantasyFootball application
+
+![](Screenshots/FantasyFootball.gif)
 
 ## Instructions:
 Write a program that allows users to create and store footballers 
@@ -15,6 +17,19 @@ The team scores 10 points per goal, -5 for a red card and -2 for a yellow card.
 
 When calculating the team's value, the stats of each player is read from
 the file and the stored values are used to calculate the current value of the team.
+
+## Brief Explanation of MVVM
+If you are unfamiliar with the MVVM design pattern it stands for: **M**odel, **V**iew,
+**V**iew**M**odel and it's main purpose it to decouple the user interface from any buisness logic
+it does this by splitting the program into the model, view, and viewmodel. 
+
+The view is created in xaml, which is essentially the html of the program.
+
+The model holds the basic data, this is normally just a traditional c# class.
+
+And the View models, these connect the views and modles, it turns the data from the model into properties that the view can show to the user.
+
+For this project I used a MVVM framework to make everything easier: MvvmCross.
 
 ## Resources I used (in no particular order):
 - [Asynchronous Programming - Tim Corey](https://www.youtube.com/watch?v=2moh18sh5p4)
