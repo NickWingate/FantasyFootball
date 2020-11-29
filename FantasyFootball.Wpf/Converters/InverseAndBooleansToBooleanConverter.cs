@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Data;
 
 namespace FantasyFootball.Wpf.Converters
 {
     //https://stackoverflow.com/a/32810399/14106896
+    /// <summary>
+    /// Invert array of bools
+    /// </summary>
     public class InverseAndBooleansToBooleanConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)

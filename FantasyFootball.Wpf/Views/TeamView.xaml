@@ -22,10 +22,11 @@
             </ResourceDictionary.MergedDictionaries>
             <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <convertors:InverseAndBooleansToBooleanConverter x:Key="InverseAndBooleansToBooleanConverter"/>
+            <convertors:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="White">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
@@ -60,33 +61,36 @@
             </Grid.RowDefinitions>
             <!--First Name-->
             <Label Content="First name:" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBox Name="FirstNameTxtBox" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="0">
+            <TextBox Name="FirstNameTxtBox" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="0"
+                     IsEnabled="{Binding IsPlayerLimitReached, Converter={StaticResource InverseBooleanConverter}}">
                 <TextBox.Text>
                     <Binding Path="PlayerFirstName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:StringValidationRule FieldName="First name" MaxLength="20"/>
+                            <validators:StringValidationRule FieldName="First name" MaxLength="20" ValidatesOnTargetUpdated="True"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
             <!--Last Name-->
             <Label Content="Last name:" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Name="LastNameTxtBox" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="1">
+            <TextBox Name="LastNameTxtBox" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" 
+                     TabIndex="1" IsEnabled="{Binding IsPlayerLimitReached, Converter={StaticResource InverseBooleanConverter}}">
                 <TextBox.Text>
                     <Binding Path="PlayerLastName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:StringValidationRule FieldName="Last name" MaxLength="20"/>
+                            <validators:StringValidationRule FieldName="Last name" MaxLength="20" ValidatesOnTargetUpdated="True"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
             <!--Goals-->
             <Label Content="Goals:" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Name="GoalsTxtBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="2">
+            <TextBox Name="GoalsTxtBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" 
+                     TabIndex="2" IsEnabled="{Binding IsPlayerLimitReached, Converter={StaticResource InverseBooleanConverter}}">
                 <TextBox.Text>
                     <Binding Path="Goals" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:NullPositiveIntegerValidationRule FieldName="Goals"/>
+                            <validators:NullPositiveIntegerValidationRule FieldName="Goals" ValidatesOnTargetUpdated="True"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -94,11 +98,12 @@
 
             <!--Yellow Cards-->
             <Label Content="Yellow Cards:" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Name="YellowCardsTxtBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="3">
+            <TextBox Name="YellowCardsTxtBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" 
+                     TabIndex="3" IsEnabled="{Binding IsPlayerLimitReached, Converter={StaticResource InverseBooleanConverter}}">
                 <TextBox.Text>
                     <Binding Path="YellowCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:NullPositiveIntegerValidationRule FieldName="Yellow cards"/>
+                            <validators:NullPositiveIntegerValidationRule FieldName="Yellow cards" ValidatesOnTargetUpdated="True"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -106,18 +111,20 @@
 
             <!--Red Cards-->
             <Label Content="Red Cards:" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Name="RedCardsTxtBox" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}" TabIndex="4">
+            <TextBox Name="RedCardsTxtBox" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Template="{DynamicResource TextBoxDesign}"
+                     TabIndex="4" IsEnabled="{Binding IsPlayerLimitReached, Converter={StaticResource InverseBooleanConverter}}">
                 <TextBox.Text>
                     <Binding Path="RedCards" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validators:NullPositiveIntegerValidationRule FieldName="Red cards"/>
+                            <validators:NullPositiveIntegerValidationRule FieldName="Red cards" ValidatesOnTargetUpdated="True"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
 
             
-            <Label Content="Team can have maximum of five players"
+            <Label Name="PlayerLimitLb"
+                   Content="Team can have maximum of five players"
                    FontSize="10" Foreground="Red"
                    HorizontalAlignment="Center"
                    Visibility="{Binding IsPlayerLimitReached, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -154,12 +161,12 @@
                     <Expander Expanded="Expander_Process" Collapsed="Expander_Process"/>
                 </DataTemplate>
             </DataGrid.RowHeaderTemplate>
-
-
+            
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Grid Background="WhiteSmoke">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -185,6 +192,7 @@
 
                         <Label Content="Red cards:" FontWeight="SemiBold" FontSize="15" Grid.Row="2" Grid.Column="2"/>
                         <Label Content="{Binding RedCards}" FontSize="15" Grid.Row="2" Grid.Column="3"/>
+
                     </Grid>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
@@ -203,6 +211,7 @@
                     <Binding ElementName="GoalsTxtBox" Path="(Validation.HasError)"/>
                     <Binding ElementName="YellowCardsTxtBox" Path="(Validation.HasError)"/>
                     <Binding ElementName="RedCardsTxtBox" Path="(Validation.HasError)"/>
+                    <Binding Path="IsPlayerLimitReached"/>
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>

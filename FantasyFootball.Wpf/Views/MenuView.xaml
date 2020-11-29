@@ -9,7 +9,6 @@
         xmlns:local="clr-namespace:FantasyFootball.Wpf.Views"
         mc:Ignorable="d" 
         d:DesignHeight="450" d:DesignWidth="800"
-        Background="White"
         FontFamily="Adobe Clean">
     <UserControl.Resources>
         <ResourceDictionary>

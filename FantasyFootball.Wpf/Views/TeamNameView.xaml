@@ -12,7 +12,6 @@
         xmlns:validators="clr-namespace:FantasyFootball.Wpf.ValidationRules"
         mc:Ignorable="d" 
         d:DesignHeight="450" d:DesignWidth="800"
-        Background="White"
         FontFamily="Adobe Clean">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -50,17 +49,11 @@
             <TextBox.Text>
                 <Binding Path="TeamName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <validators:StringValidationRule FieldName="Team name" MaxLength="20"/>
+                        <validators:StringValidationRule FieldName="Team name" MaxLength="20" ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
         </TextBox>
-
-        <!--<Label Content="Team name cannot be empty"
-                   FontSize="10" Foreground="Red"
-                   HorizontalAlignment="Center"
-                   Visibility="{Binding NotCanCreateTeam, Converter={StaticResource BooleanToVisibilityConverter}}"
-                   Grid.Row="3" Grid.Column="1"/>-->
 
         <Button Style="{DynamicResource RoundedButtonStyle}"
                 mvx:Bi.nd="Command CreateTeamCommand"
